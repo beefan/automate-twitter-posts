@@ -9,10 +9,10 @@ const OAuth = require('oauth');
 // export function to netlify endpoint
 exports.handler = async event => {
     const tweet = event.queryStringParameters.t
-    tweet(tweet);
+    tweeter(tweet);
 }
 
-function tweet(text) {
+function tweeter(text) {
     const authobj = new OAuth.OAuth(
         'https://api.twitter.com/oauth/request_token',
         'https://api.twitter.com/oauth/access_token',
