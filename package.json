@@ -2,14 +2,17 @@
   "name": "automate-twitter-posts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "functions/tweet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "netlify-lambda serve functions",
+    "build": "netlify-lambda build functions"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^8.2.0",
     "oauth": "^0.9.15"
+  },
+  "devDependencies": {
+    "netlify-lambda": "^2.0.1"
   }
 }
