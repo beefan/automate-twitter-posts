@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "oauth": "^0.9.15"
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "netlify-lambda": "^2.0.1"

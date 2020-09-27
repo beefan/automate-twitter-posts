@@ -1,50 +1,28 @@
-// uncomment to run with local .env file
-//require('dotenv').config()
+const Twitter = require('twitter');
 
-const OAuth = require('oauth');
-
-// uncomment to test tweet function and api keys locally
-//tweeter('cleaning up some tests')
-
-// export function to netlify endpoint
-exports.handler = async event => {
+exports.handler = (event, context, callback) => {
+    const twitter = new Twitter({
+        consumer_key: process.env.TWITTER_API_KEY,
+        consumer_secret: process.env.TWITTER_API_SECRET,
+        access_token_key: process.env.TWITTER_ACCESS_TOKEN,
+        access_token_secret: process.env.TWITTER_TOKEN_SECRET
+    });
     const tweet = event.queryStringParameters.t
-    console.log(tweet);
-    return tweeter(tweet);
+    twitter.post('statuses/update', { "status": tweet }, function (err, tweet, res) {
+        if (!err) {
+            console.log(tweet + " => good");
+            callback(null, {
+                statusCode: 200,
+                body: "Tweet sent successfully."
+            });
+        } else {
+            console.log(err);
+            callback(err, {
+                statusCode: 500,
+                body: "Tweet failed to send."
+            });
+        }
+    })
 }
-
-function tweeter(text) {
-    const twitter = new OAuth.OAuth(
-        'https://api.twitter.com/oauth/request_token',
-        'https://api.twitter.com/oauth/access_token',
-        process.env.TWITTER_API_KEY,
-        process.env.TWITTER_API_SECRET,
-        '1.0A',
-        null,
-        'HMAC-SHA1'
-    );
-
-    twitter.post('https://api.twitter.com/1.1/statuses/update.json',
-        process.env.TWITTER_ACCESS_TOKEN,
-        process.env.TWITTER_TOKEN_SECRET,
-        { "status": text },
-        'application/json',
-        function (err, data, res) {
-            if (err) {
-                console.error(err)
-                callback(null, {
-                    statusCode: 500,
-                    body: "Failed to send tweet"
-                })
-            } else {
-                console.log('good')
-                callback(null, {
-                    statusCode: 200,
-                    body: "Sent tweet successfully"
-                });
-            }
-        });
-}
-
 
 
